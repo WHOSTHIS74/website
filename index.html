@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes for FE Students</title>
+    
+    <style>
+        #upload-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+    
+        #upload-button:hover {
+            background-color: #2980b9;
+        }
+    
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #welcome-section {
+            text-align: center;
+            padding: 100px 0;
+            background-color: #3498db; /* Blue background color */
+            transition: opacity 0.8s ease;
+        }
+
+        .subject-section {
+            padding: 50px 0;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease, background-color 0.8s ease;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .subject-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .subject-links a {
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #1f3849; /* Dark blue border color */
+            color: #0c1f2b; /* Dark blue text color */
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .subject-links a:hover {
+            background-color: #2980b9;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Rest of your HTML content -->
+    <div id="welcome-section">
+        <h1><strong>WELCOME TO NOTES</strong></h1>
+        <p>Notes for All FE students. Scroll to check the notes, question papers, and textbooks.</p>
+    </div>
+
+    <div class="subject-section" id="math-section">
+
+        <h2> Engineering Mathematics - 1</h2>
+        <div class="subject-links">
+            <a href="path/to/textbooks" target="_blank">Textbooks</a>
+            
+        </div>
+    </div>
+
+    <div class="subject-section" id="mechanical-section">
+        <h2>2. Systems in Mechanical Engineering</h2>
+        <div class="subject-links">
+            <a href="https://drive.google.com/drive/folders/1HyX3hnWfJaS9tA3ngjJ7QWID1raW-kr6?usp=drive_link" target="_blank">Textbooks</a>
+            
+        </div>
+    </div>
+    
+
+    <div class="subject-section" id="electrical-section">
+        <h2>3. Basics of Electrical Engineering</h2>
+        <div class="subject-links">
+            <a href="https://upfiles.com/f/5OJ7R5" target="_blank">Textbooks</a>
+            
+        </div>
+    </div>
+
+    <div class="subject-section" id="programming-section">
+        <h2>4. Problem Solving & Programming</h2>
+        <div class="subject-links">
+            <a href="https://drive.google.com/drive/folders/1sAFF4kG4tMwNrADZ6-M7LbNVzrXwTMng?usp=drive_link" target="_blank">Textbooks</a>
+            
+        </div>
+    </div>
+    <div class="subject-section" id="physics-section">
+
+        <h2> Engineering physics </h2>
+        <div class="subject-links">
+            <a href="https://upfiles.com/f/3kEQKo" target="_blank">Textbooks</a>
+            
+        </div>
+    </div>
+    <div id="footer-section">
+        <p>This HTML page was created at DYPIEMR.</p>
+    
+        
+    </div>
+    <button id="upload-button" onclick="showFileInput()">Upload File</button>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            var welcomeSection = document.getElementById('welcome-section');
+            var mathSection = document.getElementById('math-section');
+            var mechanicalSection = document.getElementById('mechanical-section');
+            var electricalSection = document.getElementById('electrical-section');
+            var programmingSection = document.getElementById('programming-section');
+            var physicsSection = document.getElementById('physics-section');
+            
+            var subjectSections = [mathSection, mechanicalSection, electricalSection, programmingSection, physicsSection];
+            var scrollPosition = window.scrollY;
+
+            // Fading and background color effect for the welcome section
+            welcomeSection.style.opacity = 1 - scrollPosition / 500;
+            mathSection.style.opacity = 1 - scrollPosition / 500;
+            mechanicalSection.style.opacity = 1 - scrollPosition / 500;
+            electricalSection.style.opacity = 1 - scrollPosition / 500;
+            physicsSection.style.opacity = 1 - scrollPosition / 500;
+            programmingSection.style.opacity = 1 - scrollPosition / 500;
+
+            // Fading and background color effect for each subject section
+            subjectSections.forEach(function (section) {
+                var offset = section.offsetTop - window.innerHeight + 100;
+                var sectionIndex = subjectSections.indexOf(section);
+                var blueShade = 52 + sectionIndex * 20; // Adjust this value for different shades
+
+                if (scrollPosition > offset) {
+                    section.style.opacity = 1;
+                    section.style.backgroundColor = `rgba(52, 152, ${blueShade}, ${scrollPosition / 500})`; /* Dynamic background color */
+                }
+            });
+        });
+
+
+        function showFileInput() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.style.display = 'none';
+
+            fileInput.addEventListener('change', function () {
+                const file = fileInput.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('File uploaded successfully:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                    });
+                }
+            });
+
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
+        }
+    </script>
+
+</body>
+</html>
